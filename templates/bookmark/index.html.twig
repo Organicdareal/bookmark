@@ -1,0 +1,64 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ "Welcome !" | trans }}{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-md-4">
+            <h1>{{ "My Bookmarks" }}</h1>
+        </div>
+        <div class="col-md-3 offset-md-5">
+            <button id="picBtn" type="button" class="btn btn-success"><i class="fab fa-flickr"></i> {{ "New photo" | trans }}</button>
+            <button id="vidBtn" type="button" class="btn btn-success"><i class="fab fa-vimeo-v"></i> {{ "New video" | trans }}</button>
+        </div>
+    </div>
+
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">{{ "Title" | trans }}</th>
+            <th scope="col">{{ "Author" | trans }}</th>
+            <th scope="col">{{ "Date" | trans }}</th>
+            <th scope="col">{{ "URL" | trans }}</th>
+            <th scope="col">{{ "Actions" | trans }}</th>
+        </tr>
+        </thead>
+        <tbody>
+
+            {% for link in links %}
+                <tr>
+                    <td>{{ link.title }}</td>
+                    <td>{{ link.author }}</td>
+                    <td>{{ link.date | date }}</td>
+                    <td>{{ link.url }}</td>
+                    <td><i class="fas fa-pen-alt fa-lg"></i> <i class="fas fa-times fa-lg"></i></td>
+                </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+
+{% endblock %}
+
+
+{% block javascripts %}
+
+    <script>
+        $("#picBtn").click(function(){
+
+            $.ajax({
+                type: "GET",
+                url: "{{path('new_photo')}}"
+            }).done(function (data) {
+                $("#modalTitle").html('{{ "New Photo" | trans }}');
+                $("#modalBody").html(data.form);
+            }).fail(function (data){
+                //TO DO : implement msgBag errors
+            });
+
+            $('#modalForm').modal('show');
+        })
+    </script>
+
+{% endblock %}
