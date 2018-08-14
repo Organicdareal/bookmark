@@ -43,7 +43,7 @@ abstract class Link
     private $date;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Keyword::class, mappedBy="links", cascade={"persist", "remove"})
+     * @ORM\ManyToMany(targetEntity=Keyword::class, mappedBy="links", cascade={"persist"})
      * @ORM\JoinTable(name="link_keywords")
      */
     private $keywords;

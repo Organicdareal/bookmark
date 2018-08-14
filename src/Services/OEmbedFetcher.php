@@ -22,7 +22,7 @@ class OEmbedFetcher
         return $info;
     }
 
-    public function newUrl(ArrayCollection $url){
+    public function newUrl(string $url){
         $info = Embed::create($url);
         $providers = $info->getProviders();
         $oembed = $providers['oembed'];

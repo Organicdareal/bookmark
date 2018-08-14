@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Keyword;
 use App\Entity\Link;
+use App\Entity\Photo;
 use App\Form\LinkType;
 use App\Form\PhotoType;
 use App\Form\VideoType;
@@ -30,10 +31,12 @@ class BookmarkController extends AbstractController
      */
     public function newBookmark(Request $request, OEmbedFetcher $fetcher)
     {
+        $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(LinkType::class, null, array(
                 'action' => $this->generateUrl('new_bookmark'),
                 'method' => 'POST',
-                'attr' => array('id' => 'linkForm')
+                'attr' => array('id' => 'linkForm'),
+                'entity_manager' => $em,
             )
         );
 
@@ -47,7 +50,6 @@ class BookmarkController extends AbstractController
                 $link->addKeyword($keyword);
             }
 
-            $em = $this->getDoctrine()->getManager();
             $em->persist($link);
             $em->flush();
 
@@ -65,18 +67,18 @@ class BookmarkController extends AbstractController
     public function editBookmark(Request $request, Link $link)
     {
         $em = $this->getDoctrine()->getManager();
-        $className = $em->getMetadataFactory()->getMetadataFor(get_class($link))->getName();
-
-        if ($className == "App\\Entity\\Photo"){
-            $form = $this->createForm(PhotoType::class, $link);
-        } elseif ($className == "App\\Entity\\Video"){
-            $form = $this->createForm(VideoType::class, $link);
-        }
+        $form = $this->createForm(LinkType::class, $link, array(
+                'action' => $this->generateUrl('bookmark_edit', array(
+                    'id' => $link->getId()
+                )),
+                'method' => 'PUT',
+                'entity_manager' => $em,
+            )
+        );
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
+            $em->flush();
             return $this->redirectToRoute('home');
         }
 
