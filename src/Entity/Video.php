@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\Integer;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\VideoRepository")
@@ -24,6 +25,23 @@ class Video extends Link implements ContainerSize
      * @ORM\Column(type="integer")
      */
     private $height;
+
+
+
+
+
+    public function __construct(\DateTimeInterface $date, string $author, string $title, string $url, int $width, int $height, int $duration)
+    {
+        parent::__construct($date, $author, $title, $url);
+        $this->width = $width;
+        $this->height = $height;
+        $this->duration = $duration;
+    }
+
+
+
+
+
 
     public function getDuration(): ?int
     {

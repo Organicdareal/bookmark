@@ -2,14 +2,14 @@
 
 namespace App\Form;
 
-use App\Entity\Photo;
+use App\Entity\Video;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
-class PhotoType extends AbstractType
+class VideoType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -17,6 +17,7 @@ class PhotoType extends AbstractType
             ->add('title')
             ->add('author')
             ->add('date')
+            ->add('duration')
             ->add('width')
             ->add('height')
             ->add('keywords', CollectionType::class, array(
@@ -37,7 +38,7 @@ class PhotoType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Photo::class,
+            'data_class' => Video::class,
         ]);
     }
 }

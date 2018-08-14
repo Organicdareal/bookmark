@@ -2,23 +2,18 @@
 
 namespace App\Form;
 
-use App\Entity\Photo;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
-class PhotoType extends AbstractType
+class LinkType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title')
-            ->add('author')
-            ->add('date')
-            ->add('width')
-            ->add('height')
+            ->add('url')
             ->add('keywords', CollectionType::class, array(
                 'label' => " ",
                 'entry_type' => KeywordType::class,
@@ -30,14 +25,13 @@ class PhotoType extends AbstractType
             ->add('submit', SubmitType::class, array(
                 'label' => 'Create',
                 'attr' => array('class' => 'btn btn-success')
-            ))
-        ;
+            ));
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Photo::class,
+            'data_class' => null,
         ]);
     }
 }

@@ -43,17 +43,28 @@ abstract class Link
     private $date;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Keyword")
+     * @ORM\ManyToMany(targetEntity=Keyword::class, mappedBy="links", cascade={"persist", "remove"})
+     * @ORM\JoinTable(name="link_keywords")
      */
     private $keywords;
 
 
 
 
-
-    public function __construct()
+    /**
+     * Link constructor.
+     * @param \DateTimeInterface $date
+     * @param string $author
+     * @param string $title
+     * @param string $url
+     */
+    public function __construct(\DateTimeInterface $date, string $author, string $title, string $url)
     {
         $this->keywords = new ArrayCollection();
+        $this->url = $url;
+        $this->title = $title;
+        $this->date = $date;
+        $this->author = $author;
     }
 
 
@@ -124,7 +135,8 @@ abstract class Link
     public function addKeyword(Keyword $keyword): self
     {
         if (!$this->keywords->contains($keyword)) {
-            $this->keywords[] = $keyword;
+            $keyword->addLink($this);
+            $this->keywords->add($keyword);
         }
 
         return $this;
@@ -134,6 +146,7 @@ abstract class Link
     {
         if ($this->keywords->contains($keyword)) {
             $this->keywords->removeElement($keyword);
+            $keyword->removeLink($this);
         }
 
         return $this;
