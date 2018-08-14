@@ -1,1 +1,11 @@
-{{ form(form) }}
+<div class="row">
+    <div class="col">
+        {{ form_label(form.url) }}
+    </div>
+    <div class="col">
+        {{ form_widget(form.url) }}
+    </div>
+</div>
+<div class="modal-footer">
+    {{ form_row(form.submit) }}
+</div>

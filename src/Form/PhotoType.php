@@ -13,12 +13,12 @@ class PhotoType extends AbstractType
     {
         $builder
             ->add('url')
-            ->add('title')
-            ->add('author')
-            ->add('date')
-            ->add('width')
-            ->add('height')
-            ->add('keywords')
+//            ->add('title')
+//            ->add('author')
+//            ->add('date')
+//            ->add('width')
+//            ->add('height')
+//            ->add('keywords')
         ;
     }
 

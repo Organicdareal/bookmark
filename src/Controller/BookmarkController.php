@@ -6,6 +6,7 @@ use App\Entity\Photo;
 use App\Form\PhotoType;
 use App\Repository\LinkRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,6 +29,11 @@ class BookmarkController extends AbstractController
     {
         $pic = new Photo();
         $form = $this->createForm(PhotoType::class, $pic);
+        $form->add('submit', SubmitType::class, array(
+            'label' => 'Create',
+            'attr' => array('class' => 'btn btn-success')
+        ));
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
