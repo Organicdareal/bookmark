@@ -18,7 +18,6 @@ class OEmbedFetcher
 {
     public function fetchUrl(string $url){
         $info = Embed::create($url);
-
         return $info;
     }
 

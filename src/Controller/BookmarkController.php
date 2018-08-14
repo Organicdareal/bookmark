@@ -62,6 +62,19 @@ class BookmarkController extends AbstractController
     }
 
     /**
+     * @Route("/bookmark/{id}", name="bookmark_view", methods="GET")
+     */
+    public function viewBookmark(Request $request, Link $link, OEmbedFetcher $fetcher):JsonResponse
+    {
+        $infos = $fetcher->fetchUrl($link->getUrl());
+
+        return new JsonResponse(array(
+            'message' => 'Bookmark fetched',
+            'title' => $infos->getTitle(),
+            'code' => $infos->getCode()), 200);
+    }
+
+    /**
      * @Route("/edit_bookmark/{id}", name="bookmark_edit", methods="GET|POST")
      */
     public function editBookmark(Request $request, Link $link)
@@ -84,7 +97,7 @@ class BookmarkController extends AbstractController
 
         return new JsonResponse(array(
             'message' => 'Created form',
-            'form' => $this->renderView('bookmark/totalform.html.twig', array('form' => $form->createView()))), 200);
+            'form' => $this->renderView('bookmark/form.html.twig', array('form' => $form->createView()))), 200);
     }
 
     /**
