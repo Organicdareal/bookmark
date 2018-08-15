@@ -29,7 +29,7 @@ class Keyword
     private $content;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Link::class, inversedBy="keywords")
+     * @ORM\ManyToMany(targetEntity=Link::class, mappedBy="keywords")
      * @ORM\JoinTable(name="link_keywords")
      */
     private $links;

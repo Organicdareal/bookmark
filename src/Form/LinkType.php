@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Form\DataTransformer\StringToKeywordTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -30,6 +31,10 @@ class LinkType extends AbstractType
                 'label' => 'OK',
                 'attr' => array('class' => 'btn btn-success')
             ));
+
+        $builder
+            ->get('keywords')
+            ->addModelTransformer(new StringToKeywordTransformer($this->em));
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
             $link = $event->getData();

@@ -14,3 +14,16 @@ body {
 .deleteForm{
     display:inline;
 }
+
+form .row{
+    padding-top: 5px;
+}
+
+.alertMsg{
+    width:900%;
+    text-align: center;
+}
+
+.viewBtn:hover, .editBtn:hover{
+    text-decoration: none;
+}

@@ -79,3 +79,23 @@
 {{ form_end(form) }}
 
 <script src="{{ asset('./build/embedded_forms.js') }}"></script>
+<script>
+
+    $('#linkForm').submit(function(e){
+        e.preventDefault();
+        var url = $(this).attr("action");
+        var method = $(this).attr("method");
+        var form_data = $(this).serialize();
+
+        $.ajax({
+            url : url,
+            type: method,
+            data : form_data
+        }).done(function(data){
+            window.location.replace("/");
+        }).fail(function(data){
+            $('#modalForm').modal('hide');
+            displayMsg("URL is not valid. Use links from Vimeo or Flickr only.");
+        });
+    });
+</script>

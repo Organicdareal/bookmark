@@ -73,7 +73,7 @@ class BookmarkController extends AbstractController
     }
 
     /**
-     * @Route("/edit_bookmark/{id}", name="bookmark_edit", methods="GET|POST")
+     * @Route("/edit_bookmark/{id}", name="bookmark_edit", methods="GET|PUT")
      */
     public function editBookmark(Request $request, Link $link)
     {

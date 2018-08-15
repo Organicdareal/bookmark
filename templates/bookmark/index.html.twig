@@ -14,6 +14,10 @@
     </div>
 
     <div class="row">
+            <div class="alert alert-danger alertMsg" role="alert" style="display:none;"></div>
+    </div>
+
+    <div class="row">
         <table class="table table-hover">
             <thead class="thead-dark">
             <tr>
@@ -83,6 +87,11 @@
 {% block javascripts %}
 
     <script>
+        function displayMsg(msg){
+            $('.alertMsg').text(msg);
+            $('.alertMsg').show().delay(5000).fadeOut();
+        }
+
         $("#newBtn").click(function(){
 
             $.ajax({
@@ -92,7 +101,7 @@
                 $("#modalTitle").html('{{ "New Bookmark" | trans }}');
                 $("#modalBody").html(data.form);
             }).fail(function (data){
-                //TO DO : implement msgBag errors
+                displayMsg("Une erreur est survenue");
             });
 
             $('#modalForm').modal('show');
@@ -109,7 +118,7 @@
                 $("#modalTitle").html('{{ "Edit Bookmark" | trans }}');
                 $("#modalBody").html(data.form);
             }).fail(function (data){
-                //TO DO : implement msgBag errors
+                displayMsg("Une erreur est survenue");
             });
 
             $('#modalForm').modal('show');
@@ -127,7 +136,7 @@
                 $("#modalTitle").html(data.title);
                 $("#modalBody").html(data.code);
             }).fail(function (data){
-                //TO DO : implement msgBag errors
+                displayMsg("Une erreur est survenue");
             });
 
             $('#modalForm').modal('show');
