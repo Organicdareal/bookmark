@@ -92,8 +92,14 @@
             $('.alertMsg').show().delay(5000).fadeOut();
         }
 
+        function displayLoader(){
+            $("#modalTitle").html('');
+            $("#modalBody").html('<div class="loader"></div>');
+        }
+
         $("#newBtn").click(function(){
 
+            displayLoader();
             $.ajax({
                 type: "GET",
                 url: "{{path('new_bookmark')}}"
@@ -101,13 +107,14 @@
                 $("#modalTitle").html('{{ "New Bookmark" | trans }}');
                 $("#modalBody").html(data.form);
             }).fail(function (data){
-                displayMsg("Une erreur est survenue");
+                $('#modalForm').modal('hide');
+                displayMsg("There's been an error.");
             });
-
             $('#modalForm').modal('show');
         });
 
         $(".editBtn").click(function(e){
+            displayLoader();
             e.preventDefault();
             var url = $(this).attr("href");
 
@@ -118,13 +125,14 @@
                 $("#modalTitle").html('{{ "Edit Bookmark" | trans }}');
                 $("#modalBody").html(data.form);
             }).fail(function (data){
-                displayMsg("Une erreur est survenue");
+                $('#modalForm').modal('hide');
+                displayMsg("There's been an error.");
             });
-
             $('#modalForm').modal('show');
         });
 
         $(".viewBtn").click(function(e){
+            displayLoader();
             e.preventDefault();
             var url = $(this).attr("href");
 
@@ -136,9 +144,9 @@
                 $("#modalTitle").html(data.title);
                 $("#modalBody").html(data.code);
             }).fail(function (data){
-                displayMsg("Une erreur est survenue");
+                $('#modalForm').modal('hide');
+                displayMsg("There's been an error.");
             });
-
             $('#modalForm').modal('show');
         });
     </script>

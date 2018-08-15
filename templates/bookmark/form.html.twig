@@ -1,11 +1,13 @@
-{{ form_start(form) }}
+{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 {% if form.url is defined %}
 <div class="row">
     <div class="col-3">
         {{ form_label(form.url) }}
     </div>
     <div class="col-9">
+        {{ form_errors(form.url) }}
         {{ form_widget(form.url) }}
+        {{ form_help(form.url) }}
     </div>
 </div>
 {% else %}
