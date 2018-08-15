@@ -16,11 +16,11 @@ class BookmarkController extends AbstractController
 {
     /**
      * @Route("/", name="home", defaults={"page" = 1})
-     * @Route("/{page}", name="home_paginated")
+     * @Route("/{page}", requirements={"page" = "\d+"}, name="home_paginated")
      */
     public function index(Request $request, int $page, LinkRepository $linkRepository): Response
     {
-        $bookmarks = $linkRepository->findAll($page);
+        $bookmarks = $linkRepository->findAllPaginated($page);
         return $this->render('bookmark/index.html.twig', ['links' => $bookmarks]);
     }
 

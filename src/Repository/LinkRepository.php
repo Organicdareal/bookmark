@@ -12,6 +12,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 /**
  * @method Link|null find($id, $lockMode = null, $lockVersion = null)
  * @method Link|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Link[]    findAll()
  * @method Link[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class LinkRepository extends ServiceEntityRepository
@@ -21,7 +22,7 @@ class LinkRepository extends ServiceEntityRepository
         parent::__construct($registry, Link::class);
     }
 
-    public function findAll(int $page = 1): Pagerfanta
+    public function findAllPaginated(int $page = 1): Pagerfanta
     {
         $qb = $this->createQueryBuilder('l')->orderBy('l.date', 'DESC');
         return $this->createPaginator($qb->getQuery(), $page);
