@@ -2,12 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\Keyword;
 use App\Entity\Link;
-use App\Entity\Photo;
 use App\Form\LinkType;
-use App\Form\PhotoType;
-use App\Form\VideoType;
 use App\Repository\LinkRepository;
 use App\Services\OEmbedFetcher;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,11 +15,13 @@ use Symfony\Component\Routing\Annotation\Route;
 class BookmarkController extends AbstractController
 {
     /**
-     * @Route("/", name="home")
+     * @Route("/", name="home", defaults={"page" = 1})
+     * @Route("/{page}", name="home_paginated")
      */
-    public function index(LinkRepository $linkRepository): Response
+    public function index(Request $request, int $page, LinkRepository $linkRepository): Response
     {
-        return $this->render('bookmark/index.html.twig', ['links' => $linkRepository->findAll()]);
+        $bookmarks = $linkRepository->findAll($page);
+        return $this->render('bookmark/index.html.twig', ['links' => $bookmarks]);
     }
 
     /**

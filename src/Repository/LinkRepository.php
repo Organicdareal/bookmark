@@ -4,12 +4,14 @@ namespace App\Repository;
 
 use App\Entity\Link;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
+use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Pagerfanta;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * @method Link|null find($id, $lockMode = null, $lockVersion = null)
  * @method Link|null findOneBy(array $criteria, array $orderBy = null)
- * @method Link[]    findAll()
  * @method Link[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class LinkRepository extends ServiceEntityRepository
@@ -19,32 +21,17 @@ class LinkRepository extends ServiceEntityRepository
         parent::__construct($registry, Link::class);
     }
 
-//    /**
-//     * @return Link[] Returns an array of Link objects
-//     */
-    /*
-    public function findByExampleField($value)
+    public function findAll(int $page = 1): Pagerfanta
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $qb = $this->createQueryBuilder('l')->orderBy('l.date', 'DESC');
+        return $this->createPaginator($qb->getQuery(), $page);
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Link
+    private function createPaginator(Query $query, int $page): Pagerfanta
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $paginator = new Pagerfanta(new DoctrineORMAdapter($query));
+        $paginator->setMaxPerPage(Link::NUM_ITEMS);
+        $paginator->setCurrentPage($page);
+        return $paginator;
     }
-    */
 }
