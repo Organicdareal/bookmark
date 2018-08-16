@@ -17,7 +17,7 @@ class DBWebTest extends WebTestCase
 
     /**
      * Before each test we start a new transaction
-     * everything done in the test will be canceled ensuring isolation et speed
+     * everything done in the test will be canceled ensuring isolation and speed
      */
     protected function setUp()
     {

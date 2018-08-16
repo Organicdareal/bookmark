@@ -37,7 +37,7 @@ class LinkRepositoryTest extends KernelTestCase
             ->findAllPaginated(1)
         ;
 
-        $this->assertCount(5, $bookmarks->getCurrentPageResults());
+        $this->assertLessThanOrEqual(Link::NUM_ITEMS, count($bookmarks->getCurrentPageResults()));
     }
 
     /**

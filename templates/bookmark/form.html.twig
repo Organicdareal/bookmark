@@ -84,6 +84,7 @@
 <script>
 
     $('#linkForm').submit(function(e){
+        displayLoader();
         e.preventDefault();
         var url = $(this).attr("action");
         var method = $(this).attr("method");

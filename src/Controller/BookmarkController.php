@@ -6,6 +6,7 @@ use App\Entity\Link;
 use App\Form\LinkType;
 use App\Repository\LinkRepository;
 use App\Services\OEmbedFetcher;
+use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,6 +15,23 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class BookmarkController extends AbstractController
 {
+
+    /**
+     * @var EntityManager
+     *
+     * Handler for entity Manager
+     */
+    private $em;
+
+    /**
+     * BookmarkController constructor.
+     * @param EntityManager $em
+     */
+    public function __construct(EntityManager $em)
+    {
+        $this->em = $em;
+    }
+
     /**
      * @param Request $request
      * @param int $page
@@ -40,14 +58,12 @@ class BookmarkController extends AbstractController
      */
     public function newBookmark(Request $request, OEmbedFetcher $fetcher)
     {
-        $em = $this->getDoctrine()->getManager();
-
         //create a form with data-class = null to return only url field
         $form = $this->createForm(LinkType::class, null, array(
                 'action' => $this->generateUrl('new_bookmark'),
                 'method' => 'POST',
                 'attr' => array('id' => 'linkForm'),
-                'entity_manager' => $em,
+                'entity_manager' => $this->em,
             )
         );
 
@@ -62,8 +78,8 @@ class BookmarkController extends AbstractController
                 $link->addKeyword($keyword);
             }
 
-            $em->persist($link);
-            $em->flush();
+            $this->em->persist($link);
+            $this->em->flush();
 
             return $this->redirectToRoute('home');
         }
@@ -103,20 +119,19 @@ class BookmarkController extends AbstractController
      */
     public function editBookmark(Request $request, Link $link)
     {
-        $em = $this->getDoctrine()->getManager();
         //create a form with data-class = entityClass to return the right fields
         $form = $this->createForm(LinkType::class, $link, array(
                 'action' => $this->generateUrl('bookmark_edit', array(
                     'id' => $link->getId()
                 )),
                 'method' => 'PUT',
-                'entity_manager' => $em,
+                'entity_manager' => $this->em,
             )
         );
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->flush();
+            $this->em->flush();
             return $this->redirectToRoute('home');
         }
 
@@ -136,9 +151,8 @@ class BookmarkController extends AbstractController
     public function deleteBookmark(Request $request, Link $link): Response
     {
         if ($this->isCsrfTokenValid('delete'.$link->getId(), $request->request->get('_token'))) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($link);
-            $em->flush();
+            $this->em->remove($link);
+            $this->em->flush();
         }
 
         return $this->redirectToRoute('home');
