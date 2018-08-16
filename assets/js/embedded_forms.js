@@ -8,6 +8,7 @@ var $collectionHolder;
 var $addTagButton = $('<button type="button" class="add_tag_link btn btn-outline-success"><i class="fas fa-key"></i> New keyword</button>');
 var $newLinkLi = $('<li></li>').append($addTagButton);
 
+//append a "new keyword" button and a delete button on every keyword already there
 jQuery(document).ready(function() {
     // Get the ul that holds the collection of tags
     $collectionHolder = $('ul.keywords');
@@ -29,6 +30,7 @@ jQuery(document).ready(function() {
     });
 });
 
+//creates new keyword button
 function addTagForm($collectionHolder, $newLinkLi) {
     // Get the data-prototype explained earlier
     var prototype = $collectionHolder.data('prototype');
@@ -37,13 +39,6 @@ function addTagForm($collectionHolder, $newLinkLi) {
     var index = $collectionHolder.data('index');
 
     var newForm = prototype;
-    // You need this only if you didn't set 'label' => false in your tags field in TaskType
-    // Replace '__name__label__' in the prototype's HTML to
-    // instead be a number based on how many items we have
-    // newForm = newForm.replace(/__name__label__/g, index);
-
-    // Replace '__name__' in the prototype's HTML to
-    // instead be a number based on how many items we have
     newForm = newForm.replace(/__name__/g, index);
 
     // increase the index with one for the next item
@@ -54,6 +49,7 @@ function addTagForm($collectionHolder, $newLinkLi) {
     addTagFormDeleteLink($newFormLi);
     $newLinkLi.before($newFormLi);
 }
+//creates the delete button
 function addTagFormDeleteLink($tagFormLi) {
     var $removeFormButton = $('<button class="btn btn-outline-danger" type="button"><i class="fas fa-times"> Delete</button>');
     $tagFormLi.append($removeFormButton);

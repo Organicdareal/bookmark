@@ -17,17 +17,33 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class LinkRepository extends ServiceEntityRepository
 {
+    /**
+     * LinkRepository constructor.
+     * @param RegistryInterface $registry
+     */
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Link::class);
     }
 
+
+    /**
+     * @param int $page
+     * @return Pagerfanta
+     *
+     * returns paginated bookmarks, max number is defined by Link class constant
+     */
     public function findAllPaginated(int $page = 1): Pagerfanta
     {
         $qb = $this->createQueryBuilder('l')->orderBy('l.date', 'DESC');
         return $this->createPaginator($qb->getQuery(), $page);
     }
 
+    /**
+     * @param Query $query
+     * @param int $page
+     * @return Pagerfanta
+     */
     private function createPaginator(Query $query, int $page): Pagerfanta
     {
         $paginator = new Pagerfanta(new DoctrineORMAdapter($query));

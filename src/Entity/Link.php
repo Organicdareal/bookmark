@@ -2,16 +2,18 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="App\Repository\LinkRepository")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
  * @ORM\DiscriminatorMap({"photo" = "Photo", "video" = "Video"})
+ * @ApiResource
  */
 abstract class Link
 {
@@ -28,7 +30,7 @@ abstract class Link
      * @Assert\Regex(
      *     pattern="/^.*\b(vimeo|flic.kr)\b.*$",
      *     match=true,
-     *     message="Lnks must come from vimeo or flickr")
+     *     message="Links must come from vimeo or flickr")
      * @Assert\NotBlank()
      */
     private $url;

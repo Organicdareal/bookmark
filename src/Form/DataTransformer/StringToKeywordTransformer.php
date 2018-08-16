@@ -12,6 +12,8 @@ use Symfony\Component\Form\DataTransformerInterface;
  * User: ggicquel
  * Date: 15/08/2018
  * Time: 17:13
+ *
+ * Adapts keyword's content strings to entities
  */
 class StringToKeywordTransformer implements DataTransformerInterface
 {

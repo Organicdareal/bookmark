@@ -13,14 +13,30 @@ use Embed\Exceptions\EmbedException;
  * User: ggicquel
  * Date: 14/08/2018
  * Time: 09:45
+ *
+ * Fetch oEmbed parameters.
+ * This service uses oscarotero/Embed bundle.
  */
 class OEmbedFetcher
 {
+    /**
+     * @param string $url
+     * @return \Embed\Adapters\Adapter
+     *
+     * Returns oEmbed fetched parameters
+     */
     public function fetchUrl(string $url){
         $info = Embed::create($url);
         return $info;
     }
 
+    /**
+     * @param string $url
+     * @return Photo|Video
+     * @throws EmbedException
+     *
+     * Fetch oEmbed parameters, check if provider is accepted, then returns a relevant entity filled with fetched parameters
+     */
     public function newUrl(string $url){
         $info = Embed::create($url);
         $providers = $info->getProviders();

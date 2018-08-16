@@ -17,7 +17,9 @@ class LinkType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        //get Entity Manager
         $this->em = $options['entity_manager'];
+        //Add keywords and submit fields
         $builder
             ->add('keywords', CollectionType::class, array(
                 'label' => " ",
@@ -32,16 +34,20 @@ class LinkType extends AbstractType
                 'attr' => array('class' => 'btn btn-success')
             ));
 
+        //attach datatransformer
         $builder
             ->get('keywords')
             ->addModelTransformer(new StringToKeywordTransformer($this->em));
 
+        //Add other fields based on the passed entity's class
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
             $link = $event->getData();
             $form = $event->getForm();
 
+            //if entity is not inserted in database, displays only URL
             if (!$link || null === $link->getId()) {
                 $form->add('url');
+            //Entity exists, load the full form
             } else {
                 $className = $this->em->getMetadataFactory()->getMetadataFor(get_class($link))->getName();
                 $form->add('title')
@@ -49,6 +55,7 @@ class LinkType extends AbstractType
                     ->add('date')
                     ->add('width')
                     ->add('height');
+                //Add duration for videos
                 if ($className == "App\\Entity\\Video"){
                     $form->add('duration');
                 }
